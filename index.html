@@ -169,49 +169,74 @@ input:focus, textarea:focus {
         }
 
         function generateResumeContent(doc, name, email, phone, linkedin, portfolio) {
+    let y = 20; // Vertical position starts from 20
     doc.setFont("helvetica", "bold");
     doc.setFontSize(22);
-    doc.text(name, 10, 20);
-    
+    doc.text(name, 10, y);
+
     doc.setFontSize(12);
     doc.setFont("helvetica", "normal");
-    doc.text(`Email: ${email}`, 10, 30);
-    doc.text(`Phone: ${phone}`, 10, 40);
+    y += 10;
+    doc.text(`Email: ${email}`, 10, y);
+    y += 10;
+    doc.text(`Phone: ${phone}`, 10, y);
 
-    if (linkedin.trim() !== "") {
-        doc.setTextColor(0, 0, 255);
-        doc.textWithLink(`LinkedIn: ${linkedin}`, 10, 50, { url: linkedin });
-        doc.setTextColor(0, 0, 0);
+    if (linkedin) {
+        y += 10;
+        doc.text(`LinkedIn: ${linkedin}`, 10, y);
     }
-    
-    doc.line(10, 65, 200, 65);
-    
-    let y = 75;
+
+    if (portfolio) {
+        y += 10;
+        doc.text(`Portfolio: ${portfolio}`, 10, y);
+    }
+
+    // Capture other form fields
     let sections = [
-        { title: "Career Objective", content: document.getElementById("career-objective").value },
-        { title: "Education", content: document.getElementById("education").value },
-        { title: "Work Experience", content: document.getElementById("work-experience").value },
-        { title: "Extra-Curricular Activities", content: document.getElementById("extracurricular").value },
-        { title: "Trainings / Courses", content: document.getElementById("trainings").value },
-        { title: "Academics / Personal Projects", content: document.getElementById("projects").value },
-        { title: "Skills", content: document.getElementById("skills").value },
-        { title: "Accomplishments", content: document.getElementById("accomplishments").value },
+        { id: "career-objective", title: "Career Objective" },
+        { id: "education", title: "Education" },
+        { id: "work-experience", title: "Work Experience" },
+        { id: "extracurricular", title: "Extra-Curricular Activities" },
+        { id: "trainings", title: "Trainings / Courses" },
+        { id: "projects", title: "Academics / Personal Projects" },
+        { id: "skills", title: "Skills" },
+        { id: "accomplishments", title: "Accomplishments / Additional Details" }
     ];
 
     sections.forEach(section => {
-        if (section.content.trim() !== "") {
+        let value = document.getElementById(section.id).value.trim();
+        if (value) {
+            y += 12; // Small spacing before each heading
             doc.setFont("helvetica", "bold");
+            doc.setFontSize(14);
             doc.text(section.title, 10, y);
-            y += 6;
+
+            // Horizontal line under each subheading
+            doc.setLineWidth(0.5);
+            doc.line(10, y + 2, 200, y + 2);
+
+            y += 8; // Space after heading
             doc.setFont("helvetica", "normal");
-            let splitText = doc.splitTextToSize(section.content, 180);
+            doc.setFontSize(12);
+
+            // Split text into multiple lines within maxWidth
+            let splitText = doc.splitTextToSize(value, 180);
             doc.text(splitText, 10, y);
-            y += splitText.length * 6 + 5;
+
+            // Adjust `y` dynamically based on text height
+            y += splitText.length * 5 + 3; // Reduced spacing
+
+            // Prevent text overflow on the page
+            if (y > 270) {
+                doc.addPage();
+                y = 20; // Reset y for new page
+            }
         }
     });
 
     doc.save(`${name}_Resume.pdf`);
 }
+
 
     </script>
 </body>
