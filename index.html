@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Maker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Poppins:wght@300;400;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    color: #ffffff;
+    text-align: center;
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+h2 {
+    font-family: 'Orbitron', sans-serif;
+    color: #00ffff;
+    font-size: 28px;
+    text-transform: uppercase;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+    color: #ffffff;
+    font-size: 16px;
+    text-align: left;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    outline: none;
+}
+
+textarea {
+    height: 80px;
+}
+
+input::placeholder, textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+button {
+    margin-top: 20px;
+    padding: 12px;
+    width: 100%;
+    border: none;
+    background: linear-gradient(90deg, #00c6ff, #0072ff);
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 16px;
+}
+
+button:hover {
+    background: linear-gradient(90deg, #0072ff, #00c6ff);
+    transform: scale(1.05);
+    box-shadow: 0px 4px 10px rgba(0, 255, 255, 0.5);
+}
+
+input:focus, textarea:focus {
+    border: 1px solid #00ffff;
+    box-shadow: 0px 0px 8px rgba(0, 255, 255, 0.7);
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2><i class="fa-solid fa-file-alt"></i> Resume Maker</h2>
+        <form id="resumeForm">
+            <label for="photo">Upload Photo:</label>
+            <input type="file" id="photo" name="photo" accept="image/*">
+            
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="email">Email ID:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <label for="linkedin">LinkedIn Profile:</label>
+            <input type="url" id="linkedin" name="linkedin">
+
+            <label for="career-objective">Career Objective:</label>
+            <textarea id="career-objective" name="career-objective"></textarea>
+
+            <label for="education">Education:</label>
+            <textarea id="education" name="education"></textarea>
+
+            <label for="work-experience">Work Experience:</label>
+            <textarea id="work-experience" name="work-experience"></textarea>
+
+            <label for="extracurricular">Extra-Curricular Activities:</label>
+            <textarea id="extracurricular" name="extracurricular"></textarea>
+
+            <label for="trainings">Trainings / Courses:</label>
+            <textarea id="trainings" name="trainings"></textarea>
+
+            <label for="projects">Academics / Personal Projects:</label>
+            <textarea id="projects" name="projects"></textarea>
+
+            <label for="skills">Skills:</label>
+            <textarea id="skills" name="skills"></textarea>
+
+            <label for="portfolio">Portfolio / Work Samples:</label>
+            <input type="url" id="portfolio" name="portfolio">
+
+            <label for="accomplishments">Accomplishments / Additional Details:</label>
+            <textarea id="accomplishments" name="accomplishments"></textarea>
+
+            <button type="button" onclick="generatePDF()">Generate Resume</button>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            let doc = new jsPDF();
+
+            // Get form data
+            let name = document.getElementById("name").value || "Your Name";
+            let email = document.getElementById("email").value || "your.email@example.com";
+            let phone = document.getElementById("phone").value || "123-456-7890";
+            let linkedin = document.getElementById("linkedin").value || "";
+            let portfolio = document.getElementById("portfolio").value || "";
+
+            // Image Upload Handling
+            let imgInput = document.getElementById("photo").files[0];
+            if (imgInput) {
+                let reader = new FileReader();
+                reader.onload = function(event) {
+                    doc.addImage(event.target.result, 'JPEG', 160, 10, 30, 30);
+                    generateResumeContent(doc, name, email, phone, linkedin, portfolio);
+                };
+                reader.readAsDataURL(imgInput);
+            } else {
+                generateResumeContent(doc, name, email, phone, linkedin, portfolio);
+            }
+        }
+
+        function generateResumeContent(doc, name, email, phone, linkedin, portfolio) {
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(22);
+    doc.text(name, 10, 20);
+    
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Email: ${email}`, 10, 30);
+    doc.text(`Phone: ${phone}`, 10, 40);
+
+    if (linkedin.trim() !== "") {
+        doc.setTextColor(0, 0, 255);
+        doc.textWithLink(`LinkedIn: ${linkedin}`, 10, 50, { url: linkedin });
+        doc.setTextColor(0, 0, 0);
+    }
+    
+    doc.line(10, 65, 200, 65);
+    
+    let y = 75;
+    let sections = [
+        { title: "Career Objective", content: document.getElementById("career-objective").value },
+        { title: "Education", content: document.getElementById("education").value },
+        { title: "Work Experience", content: document.getElementById("work-experience").value },
+        { title: "Extra-Curricular Activities", content: document.getElementById("extracurricular").value },
+        { title: "Trainings / Courses", content: document.getElementById("trainings").value },
+        { title: "Academics / Personal Projects", content: document.getElementById("projects").value },
+        { title: "Skills", content: document.getElementById("skills").value },
+        { title: "Accomplishments", content: document.getElementById("accomplishments").value },
+    ];
+
+    sections.forEach(section => {
+        if (section.content.trim() !== "") {
+            doc.setFont("helvetica", "bold");
+            doc.text(section.title, 10, y);
+            y += 6;
+            doc.setFont("helvetica", "normal");
+            let splitText = doc.splitTextToSize(section.content, 180);
+            doc.text(splitText, 10, y);
+            y += splitText.length * 6 + 5;
+        }
+    });
+
+    doc.save(`${name}_Resume.pdf`);
+}
+
+    </script>
+</body>
+</html>
