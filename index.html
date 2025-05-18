@@ -1,243 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Resume Maker</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Poppins:wght@300;400;600&display=swap');
-
-body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-    color: #ffffff;
-    text-align: center;
-}
-
-.container {
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 15px;
-    box-shadow: 0px 4px 15px rgba(0, 255, 255, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-h2 {
-    font-family: 'Orbitron', sans-serif;
-    color: #00ffff;
-    font-size: 28px;
-    text-transform: uppercase;
-}
-
-label {
-    font-weight: bold;
-    display: block;
-    margin-top: 10px;
-    color: #ffffff;
-    font-size: 16px;
-    text-align: left;
-}
-
-input, textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    outline: none;
-}
-
-textarea {
-    height: 80px;
-}
-
-input::placeholder, textarea::placeholder {
-    color: rgba(255, 255, 255, 0.5);
-}
-
-button {
-    margin-top: 20px;
-    padding: 12px;
-    width: 100%;
-    border: none;
-    background: linear-gradient(90deg, #00c6ff, #0072ff);
-    color: white;
-    font-weight: bold;
-    text-transform: uppercase;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-    font-size: 16px;
-}
-
-button:hover {
-    background: linear-gradient(90deg, #0072ff, #00c6ff);
-    transform: scale(1.05);
-    box-shadow: 0px 4px 10px rgba(0, 255, 255, 0.5);
-}
-
-input:focus, textarea:focus {
-    border: 1px solid #00ffff;
-    box-shadow: 0px 0px 8px rgba(0, 255, 255, 0.7);
-}
-
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
     <div class="container">
         <h2><i class="fa-solid fa-file-alt"></i> Resume Maker</h2>
-        <form id="resumeForm">
+        <form id="resumeForm" onsubmit="return false;">
             <label for="photo">Upload Photo:</label>
-            <input type="file" id="photo" name="photo" accept="image/*">
-            
+            <input type="file" id="photo" name="photo" accept="image/*" />
+
             <label for="name">Full Name:</label>
-            <input type="text" id="name" name="name" required>
+            <input type="text" id="name" name="name" required />
 
             <label for="email">Email ID:</label>
-            <input type="email" id="email" name="email" required>
+            <input type="email" id="email" name="email" required />
 
             <label for="phone">Phone Number:</label>
-            <input type="tel" id="phone" name="phone" required>
+            <input type="tel" id="phone" name="phone" required />
 
             <label for="linkedin">LinkedIn Profile:</label>
-            <input type="url" id="linkedin" name="linkedin">
+            <input type="url" id="linkedin" name="linkedin" />
 
             <label for="career-objective">Career Objective:</label>
             <textarea id="career-objective" name="career-objective"></textarea>
 
-            <label for="education">Education:</label>
-            <textarea id="education" name="education"></textarea>
+            <!-- Education section -->
+            <label>Education:</label>
+            <div id="education-list" class="multi-input-container complex-input-container">
+                <div class="education-item input-row">
+                    <input type="text" name="education-institute" placeholder="Institute Name" required />
+                    <input type="text" name="education-degree" placeholder="Degree / Description" required />
+                    <input type="text" name="education-from" placeholder="From (e.g. 2018)" required />
+                    <input type="text" name="education-to" placeholder="To (e.g. 2022)" required />
+                </div>
+            </div>
+            <button type="button" class="add-btn" onclick="addEducation()">+ Add Education</button>
 
-            <label for="work-experience">Work Experience:</label>
-            <textarea id="work-experience" name="work-experience"></textarea>
+            <!-- Work experience -->
+            <label>Work Experience:</label>
+            <div id="work-experience-list" class="multi-input-container complex-input-container">
+                <div class="work-item input-row">
+                    <input type="text" name="work-org" placeholder="Organization Name" required />
+                    <input type="text" name="work-role" placeholder="Role / Description" required />
+                    <input type="month" name="work-from" placeholder="From" required />
+                    <input type="month" name="work-to" placeholder="To" />
+                    <label class="present-checkbox-label">
+                        <input type="checkbox" name="work-present" /> Present
+                    </label>
+                </div>
+            </div>
+            <button type="button" class="add-btn" onclick="addWork()">+ Add Work Experience</button>
 
-            <label for="extracurricular">Extra-Curricular Activities:</label>
-            <textarea id="extracurricular" name="extracurricular"></textarea>
+            <!-- Extra-Curricular Activities -->
+            <label for="extracurricular-list">Extra-Curricular Activities:</label>
+            <div id="extracurricular-list" class="multi-input-container">
+                <textarea name="extracurricular-list-item" class="multi-input"></textarea>
+            </div>
+            <button type="button" class="add-btn" onclick="addField('extracurricular-list')">+ Add Activity</button>
 
             <label for="trainings">Trainings / Courses:</label>
             <textarea id="trainings" name="trainings"></textarea>
 
-            <label for="projects">Academics / Personal Projects:</label>
-            <textarea id="projects" name="projects"></textarea>
+            <!-- Projects -->
+            <label>Academics / Personal Projects:</label>
+            <div id="projects-list" class="multi-input-container complex-input-container">
+                <div class="project-item input-row">
+                    <input type="text" name="project-title" placeholder="Project Title" required />
+                    <input type="text" name="project-description" placeholder="Description" required />
+                    <input type="text" name="project-duration" placeholder="Duration (e.g. Jan 2023 - May 2023)"
+                        required />
+                    <input type="url" name="project-link" placeholder="Live Link (https://...)" />
+                </div>
+            </div>
+            <button type="button" class="add-btn" onclick="addProject()">+ Add Project</button>
 
-            <label for="skills">Skills:</label>
-            <textarea id="skills" name="skills"></textarea>
+            <!-- Skills -->
+            <label>Skills:</label>
+            <div id="skills-list" class="multi-input-container skills-container">
+                <input type="text" name="skills-item" class="skill-input" placeholder="Skill" maxlength="30"
+                    style="width: 200px;" />
+            </div>
+            <button type="button" class="add-btn" onclick="addSkill()">+ Add Skill</button>
+
+            <!-- Accomplishments -->
+            <label for="accomplishments-list">Accomplishments / Additional Details:</label>
+            <div id="accomplishments-list" class="multi-input-container">
+                <textarea name="accomplishments-list-item" class="multi-input"></textarea>
+            </div>
+            <button type="button" class="add-btn" onclick="addField('accomplishments-list')">+ Add
+                Accomplishment</button>
 
             <label for="portfolio">Portfolio / Work Samples:</label>
-            <input type="url" id="portfolio" name="portfolio">
-
-            <label for="accomplishments">Accomplishments / Additional Details:</label>
-            <textarea id="accomplishments" name="accomplishments"></textarea>
+            <input type="url" id="portfolio" name="portfolio" />
 
             <button type="button" onclick="generatePDF()">Generate Resume</button>
         </form>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script>
-        function generatePDF() {
-            const { jsPDF } = window.jspdf;
-            let doc = new jsPDF();
-
-            // Get form data
-            let name = document.getElementById("name").value || "Your Name";
-            let email = document.getElementById("email").value || "your.email@example.com";
-            let phone = document.getElementById("phone").value || "123-456-7890";
-            let linkedin = document.getElementById("linkedin").value || "";
-            let portfolio = document.getElementById("portfolio").value || "";
-
-            // Image Upload Handling
-            let imgInput = document.getElementById("photo").files[0];
-            if (imgInput) {
-                let reader = new FileReader();
-                reader.onload = function(event) {
-                    doc.addImage(event.target.result, 'JPEG', 160, 10, 30, 30);
-                    generateResumeContent(doc, name, email, phone, linkedin, portfolio);
-                };
-                reader.readAsDataURL(imgInput);
-            } else {
-                generateResumeContent(doc, name, email, phone, linkedin, portfolio);
-            }
-        }
-
-        function generateResumeContent(doc, name, email, phone, linkedin, portfolio) {
-    let y = 20; // Vertical position starts from 20
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(22);
-    doc.text(name, 10, y);
-
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "normal");
-    y += 10;
-    doc.text(`Email: ${email}`, 10, y);
-    y += 10;
-    doc.text(`Phone: ${phone}`, 10, y);
-
-    if (linkedin) {
-        y += 10;
-        doc.text(`LinkedIn: ${linkedin}`, 10, y);
-    }
-
-    if (portfolio) {
-        y += 10;
-        doc.text(`Portfolio: ${portfolio}`, 10, y);
-    }
-
-    // Capture other form fields
-    let sections = [
-        { id: "career-objective", title: "Career Objective" },
-        { id: "education", title: "Education" },
-        { id: "work-experience", title: "Work Experience" },
-        { id: "extracurricular", title: "Extra-Curricular Activities" },
-        { id: "trainings", title: "Trainings / Courses" },
-        { id: "projects", title: "Academics / Personal Projects" },
-        { id: "skills", title: "Skills" },
-        { id: "accomplishments", title: "Accomplishments / Additional Details" }
-    ];
-
-    sections.forEach(section => {
-        let value = document.getElementById(section.id).value.trim();
-        if (value) {
-            y += 12; // Small spacing before each heading
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(14);
-            doc.text(section.title, 10, y);
-
-            // Horizontal line under each subheading
-            doc.setLineWidth(0.5);
-            doc.line(10, y + 2, 200, y + 2);
-
-            y += 8; // Space after heading
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(12);
-
-            // Split text into multiple lines within maxWidth
-            let splitText = doc.splitTextToSize(value, 180);
-            doc.text(splitText, 10, y);
-
-            // Adjust `y` dynamically based on text height
-            y += splitText.length * 5 + 3; // Reduced spacing
-
-            // Prevent text overflow on the page
-            if (y > 270) {
-                doc.addPage();
-                y = 20; // Reset y for new page
-            }
-        }
-    });
-
-    doc.save(`${name}_Resume.pdf`);
-}
-
-
-    </script>
+    <script src="script.js"></script>
 </body>
+
 </html>
