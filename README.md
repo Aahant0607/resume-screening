@@ -56,9 +56,9 @@ python -m spacy download en_core_web_sm
 
 ## Contributing
 Built by:
-Aahant Kumar 
-Krishna Joshi
-Shambhavi Singh
+Aahant Kumar , 
+Krishna Joshi ,
+Shambhavi Singh ,
 Tanishka Gupta 
 
 Contributions are welcome! Feel free to fork this repo and submit pull requests. 🚀
